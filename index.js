@@ -1,14 +1,23 @@
-const express = require('express')
-const app = express()
+const express = require("express");
+const db = require("./utils/db-connection");
+// const routes = require('./routes/studentRouter')
+const router = require("./routes/studentRouter");
+const studentModel = require("./models/students");
 
-const routes = require('./routes/studentRouter')
-const router = require('./routes/studentRouter')
- 
-app.use(express.json())
+const app = express();
 
-app.use("/students",router)
- 
+app.use(express.json());
 
-app.listen(3000,(err)=>{
-    console.log("server is running")
-})
+app.use("/students", router);
+
+db.sync({ force: true })
+  .then(() => {
+    app.listen(3000, (err) => {
+      console.log("server is running");
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+  
