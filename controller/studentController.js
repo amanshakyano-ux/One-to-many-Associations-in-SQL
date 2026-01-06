@@ -1,12 +1,36 @@
 const db = require("../utils/db-connection")
 const Student = require('../models/students')
+const IdentityCard = require('../models/identitycard')
+const Department = require('../models/department')
 
+const addingValueToStudentAndDepartmentTable = async(req,res)=>{
+    try{
+        
+        const department = await Department.create(req.body.department)
+
+
+         const student = await Student.create({
+            ...req.body.student,
+            departmentId:department.id
+         });
+
+        //  const idCard = await IdentityCard.create({
+        //     ...req.body.IdentityCard,
+        //     StudentId:student.id
+        //  }) 
+         res.status(201).json({
+            student
+         })
+    }catch(error){
+      res.status(500).json({error:error.message})
+    }
+}
 
 
 const addStudent = async (req,res)=>{
     try{
          const{name,email} = req.body;
-         const student = await Student.create({
+         await Student.create({
             name:name,
             email:email
             
@@ -28,7 +52,7 @@ const getAllStudents = async (req,res)=>{
          if(student.length === 0) res.status(404).send('List is empty!!')
             res.status(200).send(student)
     }catch(error){
-
+       
     }
  
 }
@@ -117,5 +141,6 @@ module.exports = {
     getAllStudents,
     getByIdStudent,
     modifyStudent,
-    deleteStudent
+    deleteStudent,
+    addingValueToStudentAndDepartmentTable
 }

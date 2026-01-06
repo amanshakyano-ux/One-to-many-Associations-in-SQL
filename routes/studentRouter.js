@@ -8,6 +8,7 @@ router.post('/',controller.addStudent)
 router.get('/:id',controller.getByIdStudent)
 router.put('/:id',controller.modifyStudent)
 router.delete('/:id',controller.deleteStudent)
+router.post('/addingStudentWithCard',controller.addingValueToStudentAndDepartmentTable)
 
 
 
